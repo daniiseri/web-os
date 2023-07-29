@@ -1,13 +1,19 @@
 'use client'
 
 import { size } from 'lodash';
-import { PlusCircle } from 'lucide-react';
+import { Pencil, PlusCircle, Trash2 } from 'lucide-react';
 import { ActionsButton } from '../ActionsButton';
-import { useAppSelector } from '@/hooks/store';
-import { selectServices } from '@/GlobalRedux/features/servicesSlice';
+import { useAppDispatch, useAppSelector } from '@/hooks/store';
+import { handleSelectedService, initializeServices, selectServices } from '@/GlobalRedux/features/servicesSlice';
+import { useEffect } from 'react';
 
 export function ServiceList() {
   const services = useAppSelector(selectServices)
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    dispatch(initializeServices())
+  }, [dispatch])
 
   return (
     <div className='w-sreen flex flex-col gap-3 p-3 rounded-md bg-white'>
@@ -39,6 +45,24 @@ export function ServiceList() {
                       <td>{service.name}</td>
                       <td>{Number(service.price).toFixed(2)}</td>
                       <td>{service.description}</td>
+                      <td>
+                        <div className='flex gap-1'>
+                          <ActionsButton
+                            action='update'
+                            className='bg-blue-500 p-1 rounded border border-blue-600'
+                            handleSelectedItem={() => dispatch(handleSelectedService(service))}
+                          >
+                            <Pencil size={16} />
+                          </ActionsButton>
+                          <ActionsButton
+                            action='delete'
+                            className='bg-red-500 p-1 rounded border border-red-600'
+                            handleSelectedItem={() => dispatch(handleSelectedService(service))}
+                          >
+                            <Trash2 size={16} />
+                          </ActionsButton>
+                        </div>
+                      </td>
                     </tr>
                   )
                 })

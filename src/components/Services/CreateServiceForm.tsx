@@ -6,10 +6,8 @@ import { FormEvent, useContext } from "react";
 import { ActionContext } from "@/contexts/Actions";
 import { Modal } from "../Modal";
 import { Close } from "../Close";
-import { CREATE_SERVICE_ENDPOINT } from "@/utils/constants";
-import axios from "axios";
 import { useAppDispatch } from "@/hooks/store";
-import { increment } from "@/GlobalRedux/features/servicesSlice";
+import { createService } from "@/GlobalRedux/features/servicesSlice";
 
 interface Props {
   name: string
@@ -30,10 +28,8 @@ export function CreateServiceForm() {
     e.preventDefault()
 
     try {
-      const { data: { service, message } } = await axios.post(CREATE_SERVICE_ENDPOINT, values)
-      dispatch(increment(service))
-      alert(message)
-    } catch (err) {
+      await dispatch(createService(values))
+    }catch(err){
       alert(err)
     }
   }

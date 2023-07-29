@@ -6,10 +6,8 @@ import { FormEvent, useContext } from "react";
 import { ActionContext } from "@/contexts/Actions";
 import { Modal } from "../Modal";
 import { Close } from "../Close";
-import axios from "axios";
-import { CREATE_CUSTOMER_ENDPOINT, CREATE_PRODUCT_ENDPOINT } from "@/utils/constants";
 import { useAppDispatch } from "@/hooks/store";
-import { increment } from "@/GlobalRedux/features/customersSlice";
+import { createCustomer } from "@/GlobalRedux/features/customersSlice";
 
 interface Props {
   name: string
@@ -27,11 +25,9 @@ export function CreateCustomerForm() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
 
-    try{
-      const { data: {customer, message} } = await axios.post(CREATE_CUSTOMER_ENDPOINT, values)
-      dispatch(increment(customer))
-      alert(message)
-    }catch(err){
+    try {
+      await dispatch(createCustomer(values))
+    } catch (err) {
       alert(err)
     }
   }
@@ -54,7 +50,7 @@ export function CreateCustomerForm() {
           onChange={handleChange}
           required
         />
-        <button type="submit">Salvar</button>
+        <button type="submit">CRIAR</button>
       </form>
     </Modal>
   )

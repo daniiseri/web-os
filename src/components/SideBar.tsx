@@ -18,7 +18,7 @@ import {
 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
+import {useState } from 'react'
 
 export function SideBar() {
   const [activeLink, setActiveLink] = useState<string>('home');

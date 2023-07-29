@@ -6,10 +6,8 @@ import { FormEvent, useContext } from "react";
 import { ActionContext } from "@/contexts/Actions";
 import { Modal } from "../Modal";
 import { Close } from "../Close";
-import { CREATE_PRODUCT_ENDPOINT } from "@/utils/constants";
-import axios from "axios";
 import { useAppDispatch } from "@/hooks/store";
-import { increment } from "@/GlobalRedux/features/productsSlice";
+import { createProduct } from "@/GlobalRedux/features/productsSlice";
 
 interface Props {
   description: string
@@ -30,11 +28,9 @@ export function CreateProductForm() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
 
-    try{
-      const { data: { product, message } } = await axios.post(CREATE_PRODUCT_ENDPOINT, values)
-      dispatch(increment(product))
-      alert(message)
-    }catch(err){
+    try {
+      await dispatch(createProduct(values))
+    } catch (err) {
       alert(err)
     }
   }

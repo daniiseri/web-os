@@ -1,13 +1,19 @@
 'use client'
 
 import { size } from 'lodash';
-import { PlusCircle } from 'lucide-react';
+import { Pencil, PlusCircle, Trash2 } from 'lucide-react';
 import { ActionsButton } from '../ActionsButton';
-import { useAppSelector } from '@/hooks/store';
-import { selectCustomers } from '@/GlobalRedux/features/customersSlice';
+import { useAppDispatch, useAppSelector } from '@/hooks/store';
+import { initializeCustomers, selectCustomers, handleSelectedCustomer } from '@/GlobalRedux/features/customersSlice';
+import { useEffect } from 'react';
 
 export function CustomerList() {
   const customers = useAppSelector(selectCustomers)
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    dispatch(initializeCustomers())
+  }, [dispatch])
 
   return (
     <div className='w-sreen flex flex-col gap-3 p-3 rounded-md bg-white'>
@@ -39,6 +45,27 @@ export function CustomerList() {
                     <tr key={customer.id}>
                       <td>{customer.id}</td>
                       <td>{customer.name}</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>
+                        <div className='flex gap-1'>
+                          <ActionsButton
+                            action='update'
+                            className='bg-blue-500 p-1 rounded border border-blue-600'
+                            handleSelectedItem={() => dispatch(handleSelectedCustomer(customer))}
+                          >
+                            <Pencil size={16} />
+                          </ActionsButton>
+                          <ActionsButton
+                            action='delete'
+                            className='bg-red-500 p-1 rounded border border-red-600'
+                            handleSelectedItem={() => dispatch(handleSelectedCustomer(customer))}
+                          >
+                            <Trash2 size={16} />
+                          </ActionsButton>
+                        </div>
+                      </td>
                     </tr>
                   )
                 })

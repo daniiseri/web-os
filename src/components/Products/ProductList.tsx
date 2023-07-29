@@ -1,19 +1,19 @@
 'use client'
 
 import { size } from 'lodash';
-import { PlusCircle, Scan, Tally4 } from 'lucide-react';
+import { Pencil, PlusCircle, Scan, Tally4, Trash2 } from 'lucide-react';
 import { ActionsButton } from '../ActionsButton';
 import { useAppDispatch, useAppSelector } from '@/hooks/store';
-import { initializeProducts, selectProducts } from '@/GlobalRedux/features/productsSlice';
+import { handleSelectedProduct, initializeProducts, selectProducts } from '@/GlobalRedux/features/productsSlice';
 import { useEffect } from 'react';
 
 export function ProductList() {
   const products = useAppSelector(selectProducts)
   const dispatch = useAppDispatch()
 
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(initializeProducts())
-  },[dispatch])
+  }, [dispatch])
 
   return (
     <div className='w-sreen flex flex-col gap-3 p-3 rounded-md bg-white'>
@@ -60,6 +60,24 @@ export function ProductList() {
                       <td>{product.description}</td>
                       <td>{product.stock}</td>
                       <td>{Number(product.salePrice).toFixed(2)}</td>
+                      <td>
+                        <div className='flex gap-1'>
+                          <ActionsButton
+                            action='update'
+                            className='bg-blue-500 p-1 rounded border border-blue-600'
+                            handleSelectedItem={() => dispatch(handleSelectedProduct(product))}
+                          >
+                            <Pencil size={16} />
+                          </ActionsButton>
+                          <ActionsButton
+                            action='delete'
+                            className='bg-red-500 p-1 rounded border border-red-600'
+                            handleSelectedItem={() => dispatch(handleSelectedProduct(product))}
+                          >
+                            <Trash2 size={16} />
+                          </ActionsButton>
+                        </div>
+                      </td>
                     </tr>
                   )
                 })
